@@ -32,7 +32,13 @@ export default function App() {
           tabBarInactiveTintColor: "gray",
         })}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Tab.Screen name="Search" component={SavedScreen} />
         <Tab.Screen name="Saved" component={SearchScreen} />
         <Tab.Screen name="Shopping List" component={ShoppingListScreen} />
