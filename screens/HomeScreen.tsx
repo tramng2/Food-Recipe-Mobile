@@ -2,23 +2,22 @@ import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
-  Text,
   Pressable,
   TextInput,
   FlatList,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { Categories } from "../types";
+import { BORDER_RADIUS, COLORS, IMAGES, MARGIN } from "../assets/ConstantStyle";
+import { CategoryCard } from "../components";
+import { Ionicons } from "@expo/vector-icons";
+import { Text } from "react-native-elements";
 
-const Item = ({ strCategory }: any) => {
-  return (
-    <View style={styles.item}>
-      <Text>{strCategory}</Text>
-    </View>
-  );
-};
 function HomeScreen() {
   const [categories, setCategories] = useState<Categories[]>([]);
+
   const foodCategories = async () => {
     const response = await fetch(
       "https://www.themealdb.com/api/json/v1/1/categories.php"
@@ -26,32 +25,58 @@ function HomeScreen() {
     const { categories } = await response.json();
     setCategories(categories);
   };
-  const renderItem = ({ item }: any) => <Item strCategory={item.strCategory} />;
+
+  const renderHeader = () => (
+    <View style={styles.top}>
+      <View>
+        <Text style={styles.top_title} h4>
+          Hello, Tram
+        </Text>
+        <Text style={styles.top_subTitle}>What do you want to cook today?</Text>
+      </View>
+      <TouchableOpacity onPress={() => console.log("profile")}>
+        <Image source={IMAGES.PROFILE} style={styles.profile} />
+      </TouchableOpacity>
+    </View>
+  );
+  const renderSearchBar = () => {
+    return (
+      <Pressable style={styles.searchBar} onPress={() => console.log("dkm")}>
+        <Ionicons name="md-search" size={25} color={COLORS.GRAY} />
+        <Text style={{ color: COLORS.GRAY, marginLeft: 10 }}>Find Recipes</Text>
+      </Pressable>
+    );
+  };
+  const trendyCategories = () => (
+    <View>
+      <Text style={styles.sub_title} h4>
+        Categories
+      </Text>
+      <FlatList
+        horizontal
+        data={categories}
+        renderItem={({ item }) => {
+          return <CategoryCard recipeItem={item} />;
+        }}
+        keyExtractor={(item) => item.idCategory}
+        showsHorizontalScrollIndicator={false}
+      />
+    </View>
+  );
 
   useEffect(() => {
     foodCategories();
   }, []);
   return (
-    <View style={styles.container}>
-      <View style={styles.top}>
-        <Text style={styles.top_title}>Hello, Tram</Text>
-        <Ionicons name="settings" size={30} color="black" />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.wrapper}>
+        <View>
+          {renderHeader()}
+          {renderSearchBar()}
+          {trendyCategories()}
+        </View>
       </View>
-      <View style={styles.bottom}>
-        <Pressable onPress={() => console.log("dkm")}>
-          <View style={styles.input}>
-            <TextInput placeholder="Find your recipe" editable={false} />
-          </View>
-        </Pressable>
-        <Text style={styles.bottom_title}>Categories</Text>
-
-        <FlatList
-          data={categories}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.idCategory}
-        />
-      </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -60,50 +85,46 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    // borderWidth: 4,
-    // borderColor: "blue",
-    paddingTop: 30,
-    paddingBottom: 20,
-    paddingLeft: 20,
-    paddingRight: 20,
+    backgroundColor: COLORS.WHITE,
+  },
+  wrapper: {
+    paddingLeft: 25,
+    paddingRight: 25,
   },
   top: {
-    flex: 1,
-    // borderWidth: 4,
-    // borderColor: "blue",
+    height: 100,
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
-    paddingTop: 10,
-  },
-  top_title: {
-    fontSize: 25,
-    fontWeight: "bold",
-  },
-  bottom: {
-    flex: 6,
     borderWidth: 4,
     borderColor: "blue",
   },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 5,
-    borderColor: "grey",
-  },
-  bottom_title: {
-    fontSize: 25,
+  top_title: {
     fontWeight: "bold",
-    marginTop: 20,
+    color: COLORS.ORANGE_TEXT,
   },
-  item: {
-    backgroundColor: "#f9c2ff",
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+  top_subTitle: {
+    marginTop: 3,
+    color: COLORS.GRAY,
+  },
+  profile: {
+    width: 55,
+    height: 55,
+    borderRadius: 20,
+    backgroundColor: "black",
+  },
+  searchBar: {
+    flexDirection: "row",
+    height: 50,
+    alignItems: "center",
+    paddingHorizontal: 30,
+    borderRadius: BORDER_RADIUS,
+    backgroundColor: COLORS.LIGHT_GRAY,
+    marginTop: 10,
+  },
+
+  sub_title: {
+    fontWeight: "bold",
+    marginTop: 30,
   },
 });

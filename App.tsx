@@ -8,7 +8,7 @@ import SavedScreen from "./screens/SavedScreen";
 import ShoppingListScreen from "./screens/ShoppingListScreen";
 import SearchScreen from "./screens/SearchScreen";
 import { Ionicons } from "@expo/vector-icons";
-
+import { COLORS } from "./assets/ConstantStyle";
 export default function App() {
   const Tab = createBottomTabNavigator();
   return (
@@ -28,8 +28,8 @@ export default function App() {
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: "tomato",
-          tabBarInactiveTintColor: "gray",
+          tabBarActiveTintColor: COLORS.ORANGE,
+          tabBarInactiveTintColor: COLORS.GRAY,
         })}
       >
         <Tab.Screen
