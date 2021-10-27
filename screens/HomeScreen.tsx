@@ -3,24 +3,26 @@ import {
   StyleSheet,
   View,
   Pressable,
-  Button,
   FlatList,
   SafeAreaView,
   TouchableOpacity,
   Image,
-  Modal,
 } from "react-native";
 import { Recipes } from "../types";
 import { BORDER_RADIUS, COLORS, IMAGES, MARGIN } from "../assets/ConstantStyle";
 import { CategoryCard } from "../components";
 import { Ionicons } from "@expo/vector-icons";
 import { Text } from "react-native-elements";
-import { dummyData } from "../data";
+import { getDatabase, ref, onValue } from "firebase/database";
 
 function HomeScreen({ navigation }: any) {
-  const [recipes, setRecipe] = useState<Recipes[]>([]);
+  const [recipes, setRecipes] = useState<Recipes[]>([]);
   useEffect(() => {
-    setRecipe(dummyData);
+    const reference = ref(getDatabase(), "data/");
+    onValue(reference, (snapshot) => {
+      const rlbs = snapshot.val();
+      setRecipes(rlbs);
+    });
   }, []);
   const renderHeader = () => (
     <View style={styles.top}>

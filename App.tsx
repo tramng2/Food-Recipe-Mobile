@@ -4,7 +4,6 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-
 import {
   HomeScreen,
   SavedScreen,
@@ -12,9 +11,19 @@ import {
   SearchScreen,
   DetailRecipe,
 } from "./screens";
-
-import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "./assets/ConstantStyle";
+import { Ionicons } from "@expo/vector-icons";
+
+import { firebaseConfig } from "./configFirebase";
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, onValue } from "firebase/database";
+
+const app = initializeApp(firebaseConfig);
+// const database = getDatabase();
+// const reference = ref(database, "data/");
+// onValue(reference, (snapshot) => {
+//   console.log(snapshot);
+// });
 
 export default function App() {
   const Tab = createBottomTabNavigator();
@@ -26,7 +35,7 @@ export default function App() {
   const HomeStackScreen = () => (
     <HomeStack.Navigator>
       <HomeStack.Screen
-        name="Home"
+        name="Homee"
         component={HomeScreen}
         options={{
           headerShown: false,
