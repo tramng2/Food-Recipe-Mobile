@@ -3,14 +3,43 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "./screens/HomeScreen";
-import SavedScreen from "./screens/SavedScreen";
-import ShoppingListScreen from "./screens/ShoppingListScreen";
-import SearchScreen from "./screens/SearchScreen";
+import { createStackNavigator } from "@react-navigation/stack";
+
+import {
+  HomeScreen,
+  SavedScreen,
+  ShoppingListScreen,
+  SearchScreen,
+  DetailRecipe,
+} from "./screens";
+
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "./assets/ConstantStyle";
+
 export default function App() {
   const Tab = createBottomTabNavigator();
+  const HomeStack = createStackNavigator();
+  const DetailRecipeStack = createStackNavigator();
+  const ShoppingStack = createStackNavigator();
+  const SearchStack = createStackNavigator();
+
+  const HomeStackScreen = () => (
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <DetailRecipeStack.Screen name="Recipe" component={DetailRecipe} />
+      <ShoppingStack.Screen
+        name="Shopping List"
+        component={ShoppingListScreen}
+      />
+      <SearchStack.Screen name="Search" component={SearchScreen} />
+    </HomeStack.Navigator>
+  );
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -34,7 +63,7 @@ export default function App() {
       >
         <Tab.Screen
           name="Home"
-          component={HomeScreen}
+          component={HomeStackScreen}
           options={{
             headerShown: false,
           }}

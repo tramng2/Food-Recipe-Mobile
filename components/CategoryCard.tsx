@@ -9,49 +9,57 @@ import {
 import { Text } from "react-native-elements";
 import { COLORS, BORDER_RADIUS, MARGIN } from "../assets/ConstantStyle";
 import { BlurView } from "expo-blur";
-//8401742f7cad4e5c92d8fa02abbeb954
-const CardRecipeInfo = ({ recipeItem }: any) => {
-  console.log(recipeItem);
-  return (
-    <BlurView
-      intensity={90}
-      tint="dark"
-      // blurType="dark"
-      style={styles.cardRecipeInfo}
-    ></BlurView>
-  );
-};
+import { Ionicons } from "@expo/vector-icons";
 
-function CategoryCard({ recipeItem }: any) {
+function CategoryCard({ recipeItem, onPress }: any) {
   return (
-    <TouchableOpacity style={styles.categoryCard}>
-      <Image
-        source={{ uri: `${recipeItem.strCategoryThumb}` }}
-        resizeMode="cover"
-        style={styles.listItem}
-      />
+    <View style={styles.categoryCard}>
+      <TouchableOpacity onPress={onPress}>
+        <Image
+          source={{ uri: `${recipeItem.image_url}` }}
+          resizeMode="cover"
+          style={styles.listItem}
+        />
+      </TouchableOpacity>
       <View style={styles.listDesc}>
         <Text style={{ color: COLORS.WHITE, fontWeight: "bold" }}>
-          {recipeItem.strCategory}
+          {recipeItem.publisher}
         </Text>
       </View>
       <View style={styles.cardRecipeInfo}>
-        <CardRecipeInfo recipeItem={recipeItem} />
+        <BlurView intensity={90} tint="dark" style={styles.cardRecipeInfo}>
+          <View style={{ flex: 1 }}>
+            <View style={styles.card_wrapper}>
+              <Text style={styles.tag}>{recipeItem.title}</Text>
+              <Ionicons
+                name="heart-outline"
+                size={30}
+                color={COLORS.ORANGE}
+                onPress={() => console.log("dkm trai tim")}
+              />
+            </View>
+            <View style={{ padding: 10 }}>
+              <Text style={{ color: COLORS.LIGHT_GRAY }}>
+                {recipeItem.time}
+              </Text>
+            </View>
+          </View>
+        </BlurView>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 
 export default CategoryCard;
 const styles = StyleSheet.create({
   categoryCard: {
-    height: 370,
+    height: 350,
     width: 250,
-    marginTop: 30,
+    marginTop: 20,
     marginRight: 20,
-    // borderRadius: BORDER_RADIUS,
-    // borderWidth: 4,
-    borderColor: "blue",
+    borderRadius: BORDER_RADIUS,
+    borderWidth: 1,
+    borderColor: COLORS.LIGHT_GRAY,
     alignItems: "center",
   },
   listItem: {
@@ -71,9 +79,22 @@ const styles = StyleSheet.create({
   },
   cardRecipeInfo: {
     position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
+    bottom: 3,
+    left: 5,
+    right: 5,
     height: 100,
+    borderRadius: 100,
+  },
+  card_wrapper: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
+  },
+  tag: {
+    color: COLORS.WHITE,
+    width: "70%",
+    fontWeight: "bold",
+    fontSize: 15,
   },
 });
