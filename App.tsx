@@ -77,8 +77,14 @@ export default function App() {
             headerShown: false,
           }}
         />
-        <Tab.Screen name="Search" component={SavedScreen} />
-        <Tab.Screen name="Saved" component={SearchScreen} />
+        <Tab.Screen
+          name="Search"
+          component={SearchScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen name="Saved" component={SavedScreen} />
         <Tab.Screen name="Shopping List" component={ShoppingListScreen} />
       </Tab.Navigator>
     </NavigationContainer>

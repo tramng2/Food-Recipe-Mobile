@@ -1,5 +1,6 @@
 export interface Recipes {
   title: string;
+  publisher: string;
   source_url: string;
   recipe_id: string;
   image_url: string;

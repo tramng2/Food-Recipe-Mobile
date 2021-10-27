@@ -6,6 +6,7 @@ module.exports = {
     GRAY: '#999',
     TRANS_GRAY: 'rgba(36, 36, 36, 0.58)',
     LIGHT_GRAY:'#dddddd',
+    OFF_WHITE:'#edebeb',
     WHITE: '#fff'
   },
   IMAGES: {
