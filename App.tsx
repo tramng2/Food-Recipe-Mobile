@@ -35,7 +35,7 @@ export default function App() {
   const HomeStackScreen = () => (
     <HomeStack.Navigator>
       <HomeStack.Screen
-        name="Homee"
+        name="Back"
         component={HomeScreen}
         options={{
           headerShown: false,
@@ -46,7 +46,13 @@ export default function App() {
         name="Shopping List"
         component={ShoppingListScreen}
       />
-      <SearchStack.Screen name="Search" component={SearchScreen} />
+      <SearchStack.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
     </HomeStack.Navigator>
   );
   return (

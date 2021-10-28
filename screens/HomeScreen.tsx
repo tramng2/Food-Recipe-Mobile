@@ -139,8 +139,6 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS,
     backgroundColor: COLORS.LIGHT_GRAY,
     marginTop: 10,
-    // borderColor: "blue",
-    // borderWidth: 1,
   },
   sub_title: {
     fontWeight: "bold",

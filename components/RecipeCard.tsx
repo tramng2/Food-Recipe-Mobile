@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: BORDER_RADIUS,
     backgroundColor: COLORS.OFF_WHITE,
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     // borderWidth: 1,
     // borderColor: "blue",
   },
@@ -47,5 +47,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     fontWeight: "bold",
+    color: COLORS.ORANGE_TEXT,
   },
 });
