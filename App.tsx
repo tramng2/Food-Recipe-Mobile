@@ -28,31 +28,17 @@ const app = initializeApp(firebaseConfig);
 export default function App() {
   const Tab = createBottomTabNavigator();
   const HomeStack = createStackNavigator();
-  const DetailRecipeStack = createStackNavigator();
-  const ShoppingStack = createStackNavigator();
-  const SearchStack = createStackNavigator();
 
   const HomeStackScreen = () => (
     <HomeStack.Navigator>
       <HomeStack.Screen
-        name="Back"
+        name="HomeStack"
         component={HomeScreen}
         options={{
           headerShown: false,
         }}
       />
-      <DetailRecipeStack.Screen name="Recipe" component={DetailRecipe} />
-      <ShoppingStack.Screen
-        name="Shopping List"
-        component={ShoppingListScreen}
-      />
-      <SearchStack.Screen
-        name="Search"
-        component={SearchScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
+      <HomeStack.Screen name="Recipe" component={DetailRecipe} />
     </HomeStack.Navigator>
   );
   return (

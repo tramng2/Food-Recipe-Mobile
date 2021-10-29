@@ -17,7 +17,7 @@ import RecipeCard from "../components/RecipeCard";
 import { BORDER_RADIUS, COLORS, IMAGES, MARGIN } from "../assets/ConstantStyle";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function SearchScreen() {
+export default function SearchScreen({ navigation }: any) {
   const [input, setInput] = useState<string>("");
   const [recipes, setRecipes] = useState<Recipes[]>([]);
 
@@ -28,27 +28,36 @@ export default function SearchScreen() {
       );
       const { recipes } = await response.json();
       if (recipes === undefined) {
-        throw new Error("No recipes are found");
+        throw new Error("No recipes are found.");
       }
       setRecipes(recipes);
-    } catch (error) {
-      Alert.alert("No recipes are found");
+    } catch (error: any) {
+      Alert.alert("Error", `${error}`, [
+        {
+          text: "Try again",
+          onPress: () => {},
+        },
+      ]);
     }
   };
-  const inputRef = useRef<TextInput>(null);
-  useEffect(() => {
-    inputRef.current && inputRef.current.focus();
-  });
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
         <View style={styles.search}>
+          <Pressable
+            onPress={() => {
+              setInput("");
+              setRecipes([]);
+              return navigation.navigate("Home", { screen: "Home" });
+            }}
+          >
+            <Ionicons name="chevron-back" size={25} color={COLORS.GRAY} />
+          </Pressable>
           <TextInput
-            ref={inputRef}
             value={input}
             onChangeText={(input) => setInput(input)}
-            placeholder="Type your ingredients"
+            placeholder="What do you want to cook?"
             onSubmitEditing={() => findRecipe()}
             style={styles.search_input}
           />
@@ -58,6 +67,7 @@ export default function SearchScreen() {
             </Pressable>
           ) : null}
         </View>
+
         <FlatList
           data={recipes}
           keyExtractor={(item) => item.recipe_id}
@@ -87,16 +97,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     height: 50,
     alignItems: "center",
-    paddingHorizontal: 30,
+    paddingHorizontal: 10,
     borderRadius: BORDER_RADIUS,
     backgroundColor: COLORS.LIGHT_GRAY,
     marginTop: 30,
     marginBottom: 30,
-  },
-  search_input: {
     // borderWidth: 5,
     // borderColor: "blue",
+  },
+  search_input: {
+    flex: 1,
+    // borderWidth: 5,
+    // borderColor: "pink",
+    marginLeft: 5,
     height: 50,
-    width: "95%",
   },
 });
