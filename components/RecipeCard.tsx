@@ -2,9 +2,9 @@ import React from "react";
 import { View, TouchableOpacity, Text, Image, StyleSheet } from "react-native";
 import { COLORS, BORDER_RADIUS, MARGIN } from "../assets/ConstantStyle";
 
-function RecipeCard({ recipeItem }: any) {
+function RecipeCard({ recipeItem, onPress }: any) {
   return (
-    <TouchableOpacity style={styles.recipeCard}>
+    <TouchableOpacity style={styles.recipeCard} onPress={onPress}>
       <Image
         source={{ uri: `${recipeItem.image_url}` }}
         resizeMode="cover"

@@ -16,23 +16,18 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { firebaseConfig } from "./configFirebase";
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue } from "firebase/database";
 
 const app = initializeApp(firebaseConfig);
-// const database = getDatabase();
-// const reference = ref(database, "data/");
-// onValue(reference, (snapshot) => {
-//   console.log(snapshot);
-// });
 
 export default function App() {
   const Tab = createBottomTabNavigator();
   const HomeStack = createStackNavigator();
+  const SearchStack = createStackNavigator();
 
   const HomeStackScreen = () => (
     <HomeStack.Navigator>
       <HomeStack.Screen
-        name="HomeStack"
+        name="Back"
         component={HomeScreen}
         options={{
           headerShown: false,
@@ -40,6 +35,18 @@ export default function App() {
       />
       <HomeStack.Screen name="Recipe" component={DetailRecipe} />
     </HomeStack.Navigator>
+  );
+  const SearchStackScreen = () => (
+    <SearchStack.Navigator>
+      <SearchStack.Screen
+        name="Back"
+        component={SearchScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <SearchStack.Screen name="Recipe" component={DetailRecipe} />
+    </SearchStack.Navigator>
   );
   return (
     <NavigationContainer>
@@ -71,7 +78,7 @@ export default function App() {
         />
         <Tab.Screen
           name="Search"
-          component={SearchScreen}
+          component={SearchStackScreen}
           options={{
             headerShown: false,
           }}

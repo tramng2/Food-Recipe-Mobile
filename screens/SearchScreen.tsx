@@ -72,7 +72,12 @@ export default function SearchScreen({ navigation }: any) {
           data={recipes}
           keyExtractor={(item) => item.recipe_id}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => <RecipeCard recipeItem={item} />}
+          renderItem={({ item }) => (
+            <RecipeCard
+              recipeItem={item}
+              onPress={() => navigation.navigate("Recipe")}
+            />
+          )}
         ></FlatList>
         <StatusBar style="auto" />
       </View>
