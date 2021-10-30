@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, createRef } from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -75,7 +75,7 @@ export default function SearchScreen({ navigation }: any) {
           renderItem={({ item }) => (
             <RecipeCard
               recipeItem={item}
-              onPress={() => navigation.navigate("Recipe")}
+              onPress={() => navigation.navigate("Recipe", { recipe: item })}
             />
           )}
         ></FlatList>
