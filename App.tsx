@@ -33,7 +33,13 @@ export default function App() {
           headerShown: false,
         }}
       />
-      <HomeStack.Screen name="Recipe" component={DetailRecipe} />
+      <HomeStack.Screen
+        name="Recipe"
+        component={DetailRecipe}
+        options={{
+          headerShown: false,
+        }}
+      />
     </HomeStack.Navigator>
   );
   const SearchStackScreen = () => (
@@ -45,7 +51,13 @@ export default function App() {
           headerShown: false,
         }}
       />
-      <SearchStack.Screen name="Recipe" component={DetailRecipe} />
+      <SearchStack.Screen
+        name="Recipe"
+        component={DetailRecipe}
+        options={{
+          headerShown: false,
+        }}
+      />
     </SearchStack.Navigator>
   );
   return (

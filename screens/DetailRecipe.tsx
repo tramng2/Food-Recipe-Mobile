@@ -3,21 +3,26 @@ import {
   View,
   Text,
   Animated,
-  Image,
+  ImageBackground,
   TouchableOpacity,
-  Platform,
   StyleSheet,
-  SafeAreaView,
   Alert,
 } from "react-native";
-import { BORDER_RADIUS, COLORS, IMAGES, MARGIN } from "../assets/ConstantStyle";
+
+import { COLORS, PADDING } from "../assets/ConstantStyle";
 import { Ionicons } from "@expo/vector-icons";
+import RecipeCardInfo from "../components/RecipeCardInfo";
 
 function DetailRecipe({ navigation, route }: any) {
   const [recipeId, setRecipeId] = useState<any>(null);
   const [selectedRecipe, setSelectedRecipe] = useState<any>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
-  console.log(selectedRecipe);
+
+  const calTime = (numIng: number) => {
+    const periods = Math.ceil(numIng / 3);
+    return periods * 15;
+  };
+
   useEffect(() => {
     const { recipe } = route.params;
     setRecipeId(recipe.recipe_id);
@@ -49,23 +54,80 @@ function DetailRecipe({ navigation, route }: any) {
     }
   }, [recipeId]);
 
-  // const renderRecipeCardHeader = () => (
-
-  // );
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.ingredient_header}>
-        <Image
-          source={{ uri: `${selectedRecipe?.image_url}` }}
-          resizeMode="cover"
-          style={styles.recipe_img}
+  const renderRecipeCardHeader = () => (
+    <View style={styles.ingredient_header}>
+      <ImageBackground
+        source={{ uri: `${selectedRecipe?.image_url}` }}
+        resizeMode="cover"
+        style={styles.recipe_img}
+      ></ImageBackground>
+      <Animated.View style={styles.header_view}>
+        <RecipeCardInfo selectedRecipe={selectedRecipe} />
+      </Animated.View>
+    </View>
+  );
+  const renderHeaderBar = () => (
+    <View style={styles.headerBar}>
+      <TouchableOpacity
+        style={styles.headerBar_content}
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons
+          name="ios-chevron-back-outline"
+          size={28}
+          color={COLORS.LIGHT_GRAY}
         />
+      </TouchableOpacity>
+    </View>
+  );
+  const renderRecipeTitle = () => {
+    const time = calTime(selectedRecipe?.ingredients.length);
+    return (
+      <View style={styles.recipe_title}>
+        <View style={{ flex: 4 }}>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+              paddingBottom: 3,
+              color: COLORS.ORANGE_TEXT,
+            }}
+          >
+            {selectedRecipe?.title}
+          </Text>
+          <Text
+            style={{
+              color: COLORS.GRAY2,
+            }}
+          >
+            {time} minutes | 4 servings
+          </Text>
+        </View>
+        <TouchableOpacity
+          style={{
+            flex: 1,
+            alignItems: "flex-end",
+          }}
+          onPress={() => console.log("dkm trai tim")}
+        >
+          <Ionicons name="heart-outline" size={30} color={COLORS.ORANGE} />
+        </TouchableOpacity>
       </View>
+    );
+  };
+  return (
+    <View style={styles.container}>
       <Animated.FlatList
         data={selectedRecipe?.ingredients}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
-        // ListHeaderComponent={<View>{renderRecipeCardHeader()}</View>}
+        ListHeaderComponent={
+          <View>
+            {renderRecipeCardHeader()}
+            {renderHeaderBar()}
+            {renderRecipeTitle()}
+          </View>
+        }
         scrollEventThrottle={16}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -85,7 +147,7 @@ function DetailRecipe({ navigation, route }: any) {
           );
         }}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -98,26 +160,67 @@ const styles = StyleSheet.create({
   ingredient_container: {
     flexDirection: "row",
     paddingHorizontal: 30,
-    // borderColor: "red",
-    // borderWidth: 1,
     alignItems: "center",
     marginVertical: 8,
   },
   ingredient_icon: {
     marginRight: 15,
-    // borderColor: "pink",
-    // borderWidth: 1,
   },
   ingredient_text: {
     marginRight: 50,
-    // borderColor: "red",
-    // borderWidth: 1,
   },
   ingredient_header: { alignItems: "center" },
   recipe_img: {
     height: 300,
     width: "100%",
-    backgroundColor: COLORS.ORANGE_TRANS,
-    // backgroundImage: "linear-gradient(to right bottom, #FBDB89, #F48982)",
+  },
+  img_background: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    height: 300,
+  },
+  header_view: {
+    position: "absolute",
+    bottom: 10,
+    left: 30,
+    right: 30,
+    height: 80,
+
+    // borderWidth: 5,
+    // borderColor: "red",
+  },
+  headerBar: {
+    position: "absolute",
+    top: 10,
+    left: 0,
+    right: 0,
+    height: 90,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+    paddingHorizontal: PADDING,
+    paddingBottom: 10,
+  },
+  headerBar_content: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 35,
+    width: 35,
+    backgroundColor: COLORS.TRANS_GRAY,
+    borderRadius: 50,
+    borderColor: COLORS.LIGHT_GRAY,
+    borderWidth: 1,
+  },
+  recipe_title: {
+    height: 100,
+    // borderColor: "red",
+    // borderWidth: 1,
+    paddingLeft: 30,
+    paddingRight: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
