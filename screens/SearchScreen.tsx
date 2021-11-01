@@ -1,14 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
   TextInput,
-  Button,
-  Image,
-  Text,
   Pressable,
   SafeAreaView,
-  Alert,
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { Recipes } from "../types";
@@ -16,30 +12,22 @@ import { StatusBar } from "expo-status-bar";
 import RecipeCard from "../components/RecipeCard";
 import { BORDER_RADIUS, COLORS, IMAGES, MARGIN } from "../assets/ConstantStyle";
 import { Ionicons } from "@expo/vector-icons";
+import { getRecipes } from "../redux/recipesSlice";
+import { useAppSelector, useAppDispatch } from "../store/hooks";
 
 export default function SearchScreen({ navigation }: any) {
-  const [input, setInput] = useState<string>("");
-  const [recipes, setRecipes] = useState<Recipes[]>([]);
+  const recipes = useAppSelector((state) => state.recipes.recipesList);
+  const dispatch = useAppDispatch();
 
-  const findRecipe = async () => {
-    try {
-      let response = await fetch(
-        `https://forkify-api.herokuapp.com/api/search?q=${input}`
-      );
-      const { recipes } = await response.json();
-      if (recipes === undefined) {
-        throw new Error("No recipes are found.");
-      }
-      setRecipes(recipes);
-    } catch (error: any) {
-      Alert.alert("Error", `${error}`, [
-        {
-          text: "Try again",
-          onPress: () => {},
-        },
-      ]);
-    }
+  const [input, setInput] = useState<string>("");
+  const [recipesList, setRecipesList] = useState<Recipes[]>([]);
+
+  const findRecipe = () => {
+    dispatch(getRecipes(input));
   };
+  useEffect(() => {
+    setRecipesList(recipes);
+  }, [recipes]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,7 +36,7 @@ export default function SearchScreen({ navigation }: any) {
           <Pressable
             onPress={() => {
               setInput("");
-              setRecipes([]);
+              setRecipesList([]);
               return navigation.navigate("Home", { screen: "Home" });
             }}
           >
@@ -69,7 +57,7 @@ export default function SearchScreen({ navigation }: any) {
         </View>
 
         <FlatList
-          data={recipes}
+          data={recipesList}
           keyExtractor={(item) => item.recipe_id}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (

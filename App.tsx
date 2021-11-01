@@ -1,4 +1,6 @@
 import { StatusBar } from "expo-status-bar";
+import { Provider } from "react-redux";
+import store from "./store/store";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -61,44 +63,46 @@ export default function App() {
     </SearchStack.Navigator>
   );
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName: string = "";
-            if (route.name === "Home") {
-              iconName = "md-home";
-            } else if (route.name === "Search") {
-              iconName = "md-search";
-            } else if (route.name === "Saved") {
-              iconName = "md-heart";
-            } else if (route.name === "Shopping List") {
-              iconName = "cart-outline";
-            }
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: COLORS.ORANGE,
-          tabBarInactiveTintColor: COLORS.GRAY,
-        })}
-      >
-        <Tab.Screen
-          name="Home"
-          component={HomeStackScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Tab.Screen
-          name="Search"
-          component={SearchStackScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Tab.Screen name="Saved" component={SavedScreen} />
-        <Tab.Screen name="Shopping List" component={ShoppingListScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName: string = "";
+              if (route.name === "Home") {
+                iconName = "md-home";
+              } else if (route.name === "Search") {
+                iconName = "md-search";
+              } else if (route.name === "Saved") {
+                iconName = "md-heart";
+              } else if (route.name === "Shopping List") {
+                iconName = "cart-outline";
+              }
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+            tabBarActiveTintColor: COLORS.ORANGE,
+            tabBarInactiveTintColor: COLORS.GRAY,
+          })}
+        >
+          <Tab.Screen
+            name="Home"
+            component={HomeStackScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Tab.Screen
+            name="Search"
+            component={SearchStackScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Tab.Screen name="Saved" component={SavedScreen} />
+          <Tab.Screen name="Shopping List" component={ShoppingListScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

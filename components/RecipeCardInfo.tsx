@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { BlurView } from "expo-blur";
 import { BORDER_RADIUS, COLORS } from "../assets/ConstantStyle";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 
