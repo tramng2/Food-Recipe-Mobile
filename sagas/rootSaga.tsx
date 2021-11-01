@@ -38,7 +38,12 @@ export function* watcherSaga() {
       const { data } = response;
       yield put(setRecipe(data));
     } catch (error) {
-      console.log(error);
+      Alert.alert("Error", `${error}`, [
+        {
+          text: "Try again",
+          onPress: () => {},
+        },
+      ]);
     }
   });
 }

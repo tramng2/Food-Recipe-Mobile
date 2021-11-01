@@ -6,16 +6,20 @@ import {
   ImageBackground,
   TouchableOpacity,
   StyleSheet,
-  Alert,
 } from "react-native";
 
 import { COLORS, PADDING } from "../assets/ConstantStyle";
 import { Ionicons } from "@expo/vector-icons";
 import RecipeCardInfo from "../components/RecipeCardInfo";
 
+import { useAppSelector, useAppDispatch } from "../store/hooks";
+import { getRecipe } from "../redux/recipeSlice";
+
 function DetailRecipe({ navigation, route }: any) {
+  const { recipe }: any = useAppSelector((state) => state.recipe.recipeDetail);
   const [recipeId, setRecipeId] = useState<any>(null);
-  const [selectedRecipe, setSelectedRecipe] = useState<any>(null);
+
+  const dispatch = useAppDispatch();
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const calTime = (numIng: number) => {
@@ -24,45 +28,23 @@ function DetailRecipe({ navigation, route }: any) {
   };
 
   useEffect(() => {
-    const { recipe } = route.params;
-    setRecipeId(recipe.recipe_id);
+    setRecipeId(route.params.recipe.recipe_id);
   }, []);
-
-  const getRecipe = async () => {
-    try {
-      let response = await fetch(
-        `https://forkify-api.herokuapp.com/api/get?rId=${recipeId}`
-      );
-      const { recipe } = await response.json();
-      if (recipe === undefined) {
-        throw new Error("Error");
-      }
-      setSelectedRecipe(recipe);
-    } catch (error: any) {
-      Alert.alert("Error", `${error}`, [
-        {
-          text: "Try again",
-          onPress: () => {},
-        },
-      ]);
-    }
-  };
 
   useEffect(() => {
     if (recipeId) {
-      getRecipe();
+      dispatch(getRecipe(recipeId));
     }
   }, [recipeId]);
-
   const renderRecipeCardHeader = () => (
     <View style={styles.ingredient_header}>
       <ImageBackground
-        source={{ uri: `${selectedRecipe?.image_url}` }}
+        source={{ uri: `${recipe?.image_url}` }}
         resizeMode="cover"
         style={styles.recipe_img}
       ></ImageBackground>
       <Animated.View style={styles.header_view}>
-        <RecipeCardInfo selectedRecipe={selectedRecipe} />
+        <RecipeCardInfo recipe={recipe} />
       </Animated.View>
     </View>
   );
@@ -81,7 +63,7 @@ function DetailRecipe({ navigation, route }: any) {
     </View>
   );
   const renderRecipeTitle = () => {
-    const time = calTime(selectedRecipe?.ingredients.length);
+    const time = calTime(recipe?.ingredients.length);
     return (
       <View style={styles.recipe_title}>
         <View style={{ flex: 4 }}>
@@ -93,7 +75,7 @@ function DetailRecipe({ navigation, route }: any) {
               color: COLORS.ORANGE_TEXT,
             }}
           >
-            {selectedRecipe?.title}
+            {recipe?.title}
           </Text>
           <Text
             style={{
@@ -118,7 +100,7 @@ function DetailRecipe({ navigation, route }: any) {
   return (
     <View style={styles.container}>
       <Animated.FlatList
-        data={selectedRecipe?.ingredients}
+        data={recipe?.ingredients}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={

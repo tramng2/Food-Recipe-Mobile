@@ -9,12 +9,12 @@ import {
 import { BORDER_RADIUS, COLORS } from "../assets/ConstantStyle";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 
-function RecipeCardInfo({ selectedRecipe }: any) {
+function RecipeCardInfo({ recipe }: any) {
   return (
     <View style={styles.card}>
       <View>
         <Text style={styles.card_content}>Recipe by:</Text>
-        <Text style={styles.card_content2}>{selectedRecipe?.publisher}</Text>
+        <Text style={styles.card_content2}>{recipe?.publisher}</Text>
       </View>
 
       <TouchableOpacity onPress={() => console.log("new tab")}>

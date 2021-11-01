@@ -2,10 +2,19 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Recipe } from "../types";
 
 type RecipeState = {
-  recipeDetail: Recipe[];
+  recipeDetail: Recipe;
 };
 const initialState: RecipeState = {
-  recipeDetail: [],
+  recipeDetail: {
+    title: "",
+    publisher: "",
+    source_url: "",
+    recipe_id: "",
+    image_url: "",
+    social_rank: 0,
+    publisher_url: "",
+    ingredients: [],
+  },
 };
 export const recipeSlice = createSlice({
   name: "recipe",
