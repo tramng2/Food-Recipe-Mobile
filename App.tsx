@@ -25,7 +25,7 @@ export default function App() {
   const Tab = createBottomTabNavigator();
   const HomeStack = createStackNavigator();
   const SearchStack = createStackNavigator();
-
+  const SaveStack = createStackNavigator();
   const HomeStackScreen = () => (
     <HomeStack.Navigator>
       <HomeStack.Screen
@@ -48,7 +48,7 @@ export default function App() {
     <SearchStack.Navigator>
       <SearchStack.Screen
         name="Back"
-        component={SearchScreen}
+        component={SavedScreen}
         options={{
           headerShown: false,
         }}
@@ -61,6 +61,24 @@ export default function App() {
         }}
       />
     </SearchStack.Navigator>
+  );
+  const SaveStackScreen = () => (
+    <SaveStack.Navigator>
+      <SaveStack.Screen
+        name="Back"
+        component={SearchScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <SaveStack.Screen
+        name="Recipe"
+        component={DetailRecipe}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </SaveStack.Navigator>
   );
   return (
     <Provider store={store}>
@@ -98,7 +116,7 @@ export default function App() {
               headerShown: false,
             }}
           />
-          <Tab.Screen name="Saved" component={SavedScreen} />
+          <Tab.Screen name="Saved" component={SearchStackScreen} />
           <Tab.Screen name="Shopping List" component={ShoppingListScreen} />
         </Tab.Navigator>
       </NavigationContainer>
