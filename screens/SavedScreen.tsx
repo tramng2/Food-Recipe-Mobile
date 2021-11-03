@@ -4,9 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import RecipeCard from "../components/RecipeCard";
 import { useAppSelector } from "../store/hooks";
 
-function SavedScreen({ navigation }: any) {
+function SavedScreen({ navigation, route }: any) {
   const favRecipes = useAppSelector((state) => state.recipes.favRecipes);
-
   return (
     <SafeAreaView>
       <FlatList
@@ -17,6 +16,7 @@ function SavedScreen({ navigation }: any) {
           <RecipeCard
             recipeItem={item}
             onPress={() => navigation.navigate("Recipe", { recipe: item })}
+            routeFav={route}
           />
         )}
       ></FlatList>

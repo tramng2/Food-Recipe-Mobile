@@ -1,8 +1,12 @@
 import React from "react";
 import { View, TouchableOpacity, Text, Image, StyleSheet } from "react-native";
-import { COLORS, BORDER_RADIUS, MARGIN } from "../assets/ConstantStyle";
+import { COLORS, BORDER_RADIUS } from "../assets/ConstantStyle";
+import { Ionicons } from "@expo/vector-icons";
+import { removeFavRecipes } from "../redux/recipesSlice";
+import { useAppDispatch } from "../store/hooks";
 
-function RecipeCard({ recipeItem, onPress }: any) {
+function RecipeCard({ recipeItem, onPress, routeFav }: any) {
+  const dispatch = useAppDispatch();
   return (
     <TouchableOpacity style={styles.recipeCard} onPress={onPress}>
       <Image
@@ -14,6 +18,14 @@ function RecipeCard({ recipeItem, onPress }: any) {
         <Text style={styles.recipeItem_title}>{recipeItem.title}</Text>
         <Text>{recipeItem.publisher}</Text>
       </View>
+      {routeFav?.name === "Favorite" ? (
+        <TouchableOpacity
+          style={styles.recipeCard_remove}
+          onPress={() => dispatch(removeFavRecipes(recipeItem))}
+        >
+          <Ionicons name="close" size={24} color={COLORS.ORANGE} />
+        </TouchableOpacity>
+      ) : null}
     </TouchableOpacity>
   );
 }
@@ -39,6 +51,7 @@ const styles = StyleSheet.create({
   },
   recipeItem_Info: {
     width: "65%",
+    flex: 3,
     paddingHorizontal: 20,
     // borderWidth: 1,
     // borderColor: "blue",
@@ -48,5 +61,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "bold",
     color: COLORS.ORANGE_TEXT,
+  },
+  recipeCard_remove: {
+    // borderWidth: 1,
+    // borderColor: "blue",
+    flex: 1,
+    alignItems: "flex-end",
   },
 });

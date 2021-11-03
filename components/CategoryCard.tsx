@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { Text } from "react-native-elements";
-import { COLORS, BORDER_RADIUS, MARGIN } from "../assets/ConstantStyle";
+import { COLORS, BORDER_RADIUS } from "../assets/ConstantStyle";
 import { BlurView } from "expo-blur";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -11,6 +11,9 @@ import { addFavRecipes, removeFavRecipes } from "../redux/recipesSlice";
 function CategoryCard({ recipeItem, onPress }: any) {
   const favRecipes = useAppSelector((state) => state.recipes.favRecipes);
   const dispatch = useAppDispatch();
+  const isFav = favRecipes.find(
+    (recipe) => recipe.recipe_id === recipeItem.recipe_id
+  );
 
   const handleLike = (recipeSelected: any) => {
     const checkDuplicate = favRecipes.find(
@@ -42,7 +45,7 @@ function CategoryCard({ recipeItem, onPress }: any) {
             <View style={styles.card_wrapper}>
               <Text style={styles.tag}>{recipeItem.title}</Text>
               <Ionicons
-                name="heart-outline"
+                name={isFav ? "heart" : "heart-outline"}
                 size={30}
                 color={COLORS.ORANGE}
                 onPress={() => handleLike(recipeItem)}
