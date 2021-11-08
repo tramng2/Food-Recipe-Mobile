@@ -22,3 +22,6 @@ const firebaseConfig = {
 export default !firebase.apps.length
   ? firebase.initializeApp(firebaseConfig)
   : firebase.app();
+
+const auth = firebase.auth();
+export { auth };

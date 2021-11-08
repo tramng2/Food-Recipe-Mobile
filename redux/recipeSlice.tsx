@@ -15,6 +15,7 @@ const initialState: RecipeState = {
     social_rank: 0,
     publisher_url: "",
     ingredients: [],
+    id: "",
   },
 };
 export const recipeSlice = createSlice({

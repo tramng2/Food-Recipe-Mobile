@@ -3,12 +3,14 @@ import createSagaMiddleware from "redux-saga";
 import { watcherSaga } from "../sagas/rootSaga";
 import { recipesSlice } from "../redux/recipesSlice";
 import { recipeSlice } from "../redux/recipeSlice";
+import { userSlice } from "../redux/userSplice";
 
 const sagaMiddleware = createSagaMiddleware();
 
 const reducer = combineReducers({
   recipes: recipesSlice.reducer,
   recipe: recipeSlice.reducer,
+  user: userSlice.reducer,
 });
 
 const store = configureStore({

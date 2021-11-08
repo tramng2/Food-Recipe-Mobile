@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -9,6 +9,7 @@ import {
   ShoppingListScreen,
   SearchScreen,
   DetailRecipe,
+  LoginScreen,
 } from "./screens";
 import { COLORS } from "./assets/ConstantStyle";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,15 +17,19 @@ import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { favInit } from "./redux/recipesSlice";
 import { Recipe } from "./types";
 import firebase from "./configFirebase";
+import ProfileScreen from "./screens/ProfileScreen";
+
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function AllScreens() {
-  const Tab = createBottomTabNavigator();
   const HomeStack = createStackNavigator();
   const SearchStack = createStackNavigator();
   const SaveStack = createStackNavigator();
 
   const dispatch = useAppDispatch();
   const favRecipes = useAppSelector((state) => state.recipes.favRecipes);
+  const userStatus = useAppSelector((state) => state.user.userAuth);
 
   useEffect(() => {
     firebase
@@ -65,6 +70,13 @@ export default function AllScreens() {
           headerShown: false,
         }}
       />
+      <HomeStack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
     </HomeStack.Navigator>
   );
   const SearchStackScreen = () => (
@@ -97,6 +109,23 @@ export default function AllScreens() {
       />
     </SaveStack.Navigator>
   );
+
+  if (!userStatus) {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
+
   return (
     <NavigationContainer>
       <Tab.Navigator

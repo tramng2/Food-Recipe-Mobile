@@ -35,7 +35,7 @@ function HomeScreen({ navigation }: any) {
         </Text>
         <Text style={styles.top_subTitle}>What do you want to cook today?</Text>
       </View>
-      <TouchableOpacity onPress={() => console.log("profile")}>
+      <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
         <Image source={IMAGES.PROFILE} style={styles.profile} />
       </TouchableOpacity>
     </View>
