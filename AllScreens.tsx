@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -12,7 +12,10 @@ import {
 } from "./screens";
 import { COLORS } from "./assets/ConstantStyle";
 import { Ionicons } from "@expo/vector-icons";
-import { useAppSelector } from "./store/hooks";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
+import { favInit } from "./redux/recipesSlice";
+import { Recipe } from "./types";
+import firebase from "./configFirebase";
 
 export default function AllScreens() {
   const Tab = createBottomTabNavigator();
@@ -20,7 +23,31 @@ export default function AllScreens() {
   const SearchStack = createStackNavigator();
   const SaveStack = createStackNavigator();
 
+  const dispatch = useAppDispatch();
   const favRecipes = useAppSelector((state) => state.recipes.favRecipes);
+
+  useEffect(() => {
+    firebase
+      .database()
+      .ref("fav/")
+      .on("value", (snapshot: any) => {
+        const aux: Recipe[] = [];
+        snapshot.forEach((child: any) => {
+          aux.push({
+            title: child.val().title,
+            publisher: child.val().publisher,
+            source_url: child.val().source_url,
+            recipe_id: child.val().recipe_id,
+            image_url: child.val().image_url,
+            social_rank: child.val().social_rank,
+            publisher_url: child.val().publisher_url,
+            ingredients: child.val().ingredients,
+            id: child.key,
+          });
+        });
+        dispatch(favInit(aux));
+      });
+  }, []);
 
   const HomeStackScreen = () => (
     <HomeStack.Navigator>

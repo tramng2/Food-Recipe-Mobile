@@ -3,7 +3,7 @@ import { Recipe, Recipes } from "../types";
 import type { RootState } from "../store/store";
 
 type RecipeState = {
-  favRecipes: Recipes[];
+  favRecipes: Recipe[];
   recipesList: Recipes[];
 };
 
@@ -19,18 +19,11 @@ export const recipesSlice = createSlice({
     setRecipes: (state, action) => {
       state.recipesList = action.payload.recipes;
     },
-    addFavRecipes: (state, action: PayloadAction<any>) => {
-      state.favRecipes = [...state.favRecipes, action.payload];
-    },
-    removeFavRecipes: (state, action: PayloadAction<Recipes>) => {
-      const listFavRecipes = state.favRecipes.filter(
-        (recipe) => recipe.recipe_id !== action.payload.recipe_id
-      );
-      state.favRecipes = listFavRecipes;
+    favInit: (state, action) => {
+      state.favRecipes = action.payload;
     },
   },
 });
 
-export const { getRecipes, setRecipes, addFavRecipes, removeFavRecipes } =
-  recipesSlice.actions;
+export const { getRecipes, setRecipes, favInit } = recipesSlice.actions;
 export const recipesList = (state: RootState) => state.recipes.recipesList;

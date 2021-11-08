@@ -13,16 +13,19 @@ import { BORDER_RADIUS, COLORS, IMAGES, MARGIN } from "../assets/ConstantStyle";
 import { CategoryCard } from "../components";
 import { Ionicons } from "@expo/vector-icons";
 import { Text } from "react-native-elements";
-import { getDatabase, ref, onValue } from "firebase/database";
+import firebase from "../configFirebase";
 
 function HomeScreen({ navigation }: any) {
   const [recipes, setRecipes] = useState<Recipes[]>([]);
   useEffect(() => {
-    const reference = ref(getDatabase(), "data/");
-    onValue(reference, (snapshot) => {
-      const rlbs = snapshot.val();
-      setRecipes(rlbs);
-    });
+    firebase
+      .database()
+      .ref("data/")
+      .on("value", (snapshot: any) => {
+        const data = snapshot.val();
+        const recipeData: Recipes[] = Object.values(data);
+        setRecipes(recipeData);
+      });
   }, []);
   const renderHeader = () => (
     <View style={styles.top}>

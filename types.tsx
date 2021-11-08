@@ -18,6 +18,7 @@ export interface Recipe {
   social_rank: number;
   publisher_url: string;
   ingredients: string[];
+  id: string;
 }
 export type RootStackParamList = {
   Home: undefined;

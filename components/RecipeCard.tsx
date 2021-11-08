@@ -2,8 +2,8 @@ import React from "react";
 import { View, TouchableOpacity, Text, Image, StyleSheet } from "react-native";
 import { COLORS, BORDER_RADIUS } from "../assets/ConstantStyle";
 import { Ionicons } from "@expo/vector-icons";
-import { removeFavRecipes } from "../redux/recipesSlice";
 import { useAppDispatch } from "../store/hooks";
+import firebase from "../configFirebase";
 
 function RecipeCard({ recipeItem, onPress, routeFav }: any) {
   const dispatch = useAppDispatch();
@@ -21,7 +21,10 @@ function RecipeCard({ recipeItem, onPress, routeFav }: any) {
       {routeFav?.name === "Favorite" ? (
         <TouchableOpacity
           style={styles.recipeCard_remove}
-          onPress={() => dispatch(removeFavRecipes(recipeItem))}
+          onPress={() => {
+            const itemDelete = firebase.database().ref("fav/" + recipeItem.id);
+            itemDelete.remove();
+          }}
         >
           <Ionicons name="close" size={24} color={COLORS.ORANGE} />
         </TouchableOpacity>

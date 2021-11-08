@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 function ShoppingListScreen() {
   return (
     <View>
-      <Text>This is SettingScreen</Text>
+      <Text>Future development</Text>
     </View>
   );
 }

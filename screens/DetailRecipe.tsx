@@ -14,14 +14,11 @@ import RecipeCardInfo from "../components/RecipeCardInfo";
 
 import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { getRecipe } from "../redux/recipeSlice";
-import { addFavRecipes, removeFavRecipes } from "../redux/recipesSlice";
+import firebase from "../configFirebase";
 
 function DetailRecipe({ navigation, route }: any) {
   const { recipe }: any = useAppSelector((state) => state.recipe.recipeDetail);
   const favRecipes = useAppSelector((state) => state.recipes.favRecipes);
-  const isFav = favRecipes.find(
-    (recipeItem) => recipeItem.recipe_id === recipe.recipe_id
-  );
   const [recipeId, setRecipeId] = useState<any>(null);
 
   const dispatch = useAppDispatch();
@@ -42,14 +39,16 @@ function DetailRecipe({ navigation, route }: any) {
     }
   }, [recipeId]);
 
+  const isFav = favRecipes.find((recipe) => recipe.recipe_id === recipeId);
   const handleLike = (recipeSelected: any) => {
     const checkDuplicate = favRecipes.find(
       (recipe) => recipe.recipe_id === recipeSelected.recipe_id
     );
     if (!checkDuplicate) {
-      dispatch(addFavRecipes(recipeSelected));
+      firebase.database().ref("fav/").push(recipeSelected);
     } else {
-      dispatch(removeFavRecipes(recipeSelected));
+      const itemDelete = firebase.database().ref("fav/" + checkDuplicate.id);
+      itemDelete.remove();
     }
   };
   const renderRecipeCardHeader = () => (

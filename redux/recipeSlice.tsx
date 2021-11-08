@@ -4,6 +4,7 @@ import { Recipe } from "../types";
 type RecipeState = {
   recipeDetail: Recipe;
 };
+
 const initialState: RecipeState = {
   recipeDetail: {
     title: "",
@@ -20,6 +21,9 @@ export const recipeSlice = createSlice({
   name: "recipe",
   initialState,
   reducers: {
+    initState: (state) => {
+      state.recipeDetail = initialState.recipeDetail;
+    },
     getRecipe(state, action) {},
     setRecipe: (state, action) => {
       state.recipeDetail = action.payload;
@@ -27,4 +31,4 @@ export const recipeSlice = createSlice({
   },
 });
 
-export const { setRecipe, getRecipe } = recipeSlice.actions;
+export const { setRecipe, getRecipe, initState } = recipeSlice.actions;

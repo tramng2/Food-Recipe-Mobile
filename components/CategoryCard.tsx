@@ -6,7 +6,6 @@ import { BlurView } from "expo-blur";
 import { Ionicons } from "@expo/vector-icons";
 
 import { useAppSelector, useAppDispatch } from "../store/hooks";
-import { addFavRecipes, removeFavRecipes } from "../redux/recipesSlice";
 
 function CategoryCard({ recipeItem, onPress }: any) {
   const favRecipes = useAppSelector((state) => state.recipes.favRecipes);
@@ -14,17 +13,6 @@ function CategoryCard({ recipeItem, onPress }: any) {
   const isFav = favRecipes.find(
     (recipe) => recipe.recipe_id === recipeItem.recipe_id
   );
-
-  const handleLike = (recipeSelected: any) => {
-    const checkDuplicate = favRecipes.find(
-      (recipe) => recipe.recipe_id === recipeSelected.recipe_id
-    );
-    if (!checkDuplicate) {
-      dispatch(addFavRecipes(recipeSelected));
-    } else {
-      dispatch(removeFavRecipes(recipeSelected));
-    }
-  };
   return (
     <View style={styles.categoryCard}>
       <TouchableOpacity onPress={onPress}>
@@ -48,7 +36,6 @@ function CategoryCard({ recipeItem, onPress }: any) {
                 name={isFav ? "heart" : "heart-outline"}
                 size={30}
                 color={COLORS.ORANGE}
-                onPress={() => handleLike(recipeItem)}
               />
             </View>
             <View style={{ padding: 10 }}>
